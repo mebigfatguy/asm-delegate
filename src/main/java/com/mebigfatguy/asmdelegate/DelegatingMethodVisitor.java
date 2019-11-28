@@ -53,6 +53,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
             }
         }
 
+        if (i == 0) {
+            return null;
+        }
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
     }
 
@@ -66,6 +69,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
             }
         }
 
+        if (i == 0) {
+            return null;
+        }
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
     }
 
@@ -79,6 +85,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
             }
         }
 
+        if (i == 0) {
+            return null;
+        }
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
     }
 
@@ -101,6 +110,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
             }
         }
 
+        if (i == 0) {
+            return null;
+        }
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
     }
 
@@ -278,6 +290,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
             }
         }
 
+        if (i == 0) {
+            return null;
+        }
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
     }
 
@@ -301,6 +316,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
             }
         }
 
+        if (i == 0) {
+            return null;
+        }
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
     }
 
@@ -326,6 +344,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
             }
         }
 
+        if (i == 0) {
+            return null;
+        }
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
     }
 

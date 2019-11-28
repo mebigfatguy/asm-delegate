@@ -57,6 +57,9 @@ public class DelegatingAnnotationVisitor extends AnnotationVisitor {
             }
         }
 
+        if (i == 0) {
+            return null;
+        }
         return new DelegatingAnnotationVisitor(api, subAnnotationVisitors);
     }
 
@@ -70,6 +73,9 @@ public class DelegatingAnnotationVisitor extends AnnotationVisitor {
             }
         }
 
+        if (i == 0) {
+            return null;
+        }
         return new DelegatingAnnotationVisitor(api, arrayAnnotationVisitors);
     }
 
