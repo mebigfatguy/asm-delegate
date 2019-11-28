@@ -37,7 +37,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
     @Override
     public void visitParameter(String name, int access) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitParameter(name, access);
+            if (mv != null) {
+                mv.visitParameter(name, access);
+            }
         }
     }
 
@@ -46,7 +48,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
         int i = 0;
         for (MethodVisitor mv : methodVisitors) {
-            annotationVisitors[i++] = mv.visitAnnotationDefault();
+            if (mv != null) {
+                annotationVisitors[i++] = mv.visitAnnotationDefault();
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -57,7 +61,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
         int i = 0;
         for (MethodVisitor mv : methodVisitors) {
-            annotationVisitors[i++] = mv.visitAnnotation(descriptor, visible);
+            if (mv != null) {
+                annotationVisitors[i++] = mv.visitAnnotation(descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -68,7 +74,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
         int i = 0;
         for (MethodVisitor mv : methodVisitors) {
-            annotationVisitors[i++] = mv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+            if (mv != null) {
+                annotationVisitors[i++] = mv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -77,7 +85,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
     @Override
     public void visitAnnotableParameterCount(int parameterCount, boolean visible) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitAnnotableParameterCount(parameterCount, visible);
+            if (mv != null) {
+                mv.visitAnnotableParameterCount(parameterCount, visible);
+            }
         }
     }
 
@@ -86,7 +96,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
         int i = 0;
         for (MethodVisitor mv : methodVisitors) {
-            annotationVisitors[i++] = mv.visitParameterAnnotation(parameter, descriptor, visible);
+            if (mv != null) {
+                annotationVisitors[i++] = mv.visitParameterAnnotation(parameter, descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -95,56 +107,72 @@ public class DelegatingMethodVisitor extends MethodVisitor {
     @Override
     public void visitAttribute(Attribute attribute) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitAttribute(attribute);
+            if (mv != null) {
+                mv.visitAttribute(attribute);
+            }
         }
     }
 
     @Override
     public void visitCode() {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitCode();
+            if (mv != null) {
+                mv.visitCode();
+            }
         }
     }
 
     @Override
     public void visitFrame(int type, int numLocal, Object[] local, int numStack, Object[] stack) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitFrame(type, numLocal, local, numStack, stack);
+            if (mv != null) {
+                mv.visitFrame(type, numLocal, local, numStack, stack);
+            }
         }
     }
 
     @Override
     public void visitInsn(int opcode) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitInsn(opcode);
+            if (mv != null) {
+                mv.visitInsn(opcode);
+            }
         }
     }
 
     @Override
     public void visitIntInsn(int opcode, int operand) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitIntInsn(opcode, operand);
+            if (mv != null) {
+                mv.visitIntInsn(opcode, operand);
+            }
         }
     }
 
     @Override
     public void visitVarInsn(int opcode, int var) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitVarInsn(opcode, var);
+            if (mv != null) {
+                mv.visitVarInsn(opcode, var);
+            }
         }
     }
 
     @Override
     public void visitTypeInsn(int opcode, String type) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitTypeInsn(opcode, type);
+            if (mv != null) {
+                mv.visitTypeInsn(opcode, type);
+            }
         }
     }
 
     @Override
     public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitFieldInsn(opcode, owner, name, descriptor);
+            if (mv != null) {
+                mv.visitFieldInsn(opcode, owner, name, descriptor);
+            }
         }
     }
 
@@ -152,14 +180,18 @@ public class DelegatingMethodVisitor extends MethodVisitor {
     @Deprecated
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitMethodInsn(opcode, owner, name, descriptor);
+            if (mv != null) {
+                mv.visitMethodInsn(opcode, owner, name, descriptor);
+            }
         }
     }
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+            if (mv != null) {
+                mv.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+            }
         }
     }
 
@@ -167,56 +199,72 @@ public class DelegatingMethodVisitor extends MethodVisitor {
     public void visitInvokeDynamicInsn(String name, String descriptor, Handle bootstrapMethodHandle,
             Object... bootstrapMethodArguments) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitInvokeDynamicInsn(name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
+            if (mv != null) {
+                mv.visitInvokeDynamicInsn(name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
+            }
         }
     }
 
     @Override
     public void visitJumpInsn(int opcode, Label label) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitJumpInsn(opcode, label);
+            if (mv != null) {
+                mv.visitJumpInsn(opcode, label);
+            }
         }
     }
 
     @Override
     public void visitLabel(Label label) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitLabel(label);
+            if (mv != null) {
+                mv.visitLabel(label);
+            }
         }
     }
 
     @Override
     public void visitLdcInsn(Object value) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitLdcInsn(value);
+            if (mv != null) {
+                mv.visitLdcInsn(value);
+            }
         }
     }
 
     @Override
     public void visitIincInsn(int var, int increment) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitIincInsn(var, increment);
+            if (mv != null) {
+                mv.visitIincInsn(var, increment);
+            }
         }
     }
 
     @Override
     public void visitTableSwitchInsn(int min, int max, Label dflt, Label... labels) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitTableSwitchInsn(min, max, dflt, labels);
+            if (mv != null) {
+                mv.visitTableSwitchInsn(min, max, dflt, labels);
+            }
         }
     }
 
     @Override
     public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitLookupSwitchInsn(dflt, keys, labels);
+            if (mv != null) {
+                mv.visitLookupSwitchInsn(dflt, keys, labels);
+            }
         }
     }
 
     @Override
     public void visitMultiANewArrayInsn(String descriptor, int numDimensions) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitMultiANewArrayInsn(descriptor, numDimensions);
+            if (mv != null) {
+                mv.visitMultiANewArrayInsn(descriptor, numDimensions);
+            }
         }
     }
 
@@ -225,7 +273,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
         int i = 0;
         for (MethodVisitor mv : methodVisitors) {
-            annotationVisitors[i] = mv.visitInsnAnnotation(typeRef, typePath, descriptor, visible);
+            if (mv != null) {
+                annotationVisitors[i] = mv.visitInsnAnnotation(typeRef, typePath, descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -234,7 +284,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
     @Override
     public void visitTryCatchBlock(Label start, Label end, Label handler, String type) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitTryCatchBlock(start, end, handler, type);
+            if (mv != null) {
+                mv.visitTryCatchBlock(start, end, handler, type);
+            }
         }
     }
 
@@ -244,7 +296,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
         int i = 0;
         for (MethodVisitor mv : methodVisitors) {
-            annotationVisitors[i] = mv.visitTryCatchAnnotation(typeRef, typePath, descriptor, visible);
+            if (mv != null) {
+                annotationVisitors[i] = mv.visitTryCatchAnnotation(typeRef, typePath, descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -254,7 +308,9 @@ public class DelegatingMethodVisitor extends MethodVisitor {
     public void visitLocalVariable(String name, String descriptor, String signature, Label start, Label end,
             int index) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitLocalVariable(name, descriptor, signature, start, end, index);
+            if (mv != null) {
+                mv.visitLocalVariable(name, descriptor, signature, start, end, index);
+            }
         }
     }
 
@@ -264,8 +320,10 @@ public class DelegatingMethodVisitor extends MethodVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
         int i = 0;
         for (MethodVisitor mv : methodVisitors) {
-            annotationVisitors[i] = mv.visitLocalVariableAnnotation(typeRef, typePath, start, end, index, descriptor,
-                    visible);
+            if (mv != null) {
+                annotationVisitors[i] = mv.visitLocalVariableAnnotation(typeRef, typePath, start, end, index,
+                        descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -274,21 +332,27 @@ public class DelegatingMethodVisitor extends MethodVisitor {
     @Override
     public void visitLineNumber(int line, Label start) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitLineNumber(line, start);
+            if (mv != null) {
+                mv.visitLineNumber(line, start);
+            }
         }
     }
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitMaxs(maxStack, maxLocals);
+            if (mv != null) {
+                mv.visitMaxs(maxStack, maxLocals);
+            }
         }
     }
 
     @Override
     public void visitEnd() {
         for (MethodVisitor mv : methodVisitors) {
-            mv.visitEnd();
+            if (mv != null) {
+                mv.visitEnd();
+            }
         }
     }
 

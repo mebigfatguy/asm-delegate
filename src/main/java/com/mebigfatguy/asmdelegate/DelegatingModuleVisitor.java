@@ -32,56 +32,72 @@ public class DelegatingModuleVisitor extends ModuleVisitor {
     @Override
     public void visitMainClass(String mainClass) {
         for (ModuleVisitor mv : moduleVisitors) {
-            mv.visitMainClass(mainClass);
+            if (mv != null) {
+                mv.visitMainClass(mainClass);
+            }
         }
     }
 
     @Override
     public void visitPackage(String packaze) {
         for (ModuleVisitor mv : moduleVisitors) {
-            mv.visitPackage(packaze);
+            if (mv != null) {
+                mv.visitPackage(packaze);
+            }
         }
     }
 
     @Override
     public void visitRequire(String module, int access, String version) {
         for (ModuleVisitor mv : moduleVisitors) {
-            mv.visitRequire(module, access, version);
+            if (mv != null) {
+                mv.visitRequire(module, access, version);
+            }
         }
     }
 
     @Override
     public void visitExport(String packaze, int access, String... modules) {
         for (ModuleVisitor mv : moduleVisitors) {
-            mv.visitExport(packaze, access, modules);
+            if (mv != null) {
+                mv.visitExport(packaze, access, modules);
+            }
         }
     }
 
     @Override
     public void visitOpen(String packaze, int access, String... modules) {
         for (ModuleVisitor mv : moduleVisitors) {
-            mv.visitOpen(packaze, access, modules);
+            if (mv != null) {
+                mv.visitOpen(packaze, access, modules);
+            }
         }
     }
 
     @Override
     public void visitUse(String service) {
         for (ModuleVisitor mv : moduleVisitors) {
-            mv.visitUse(service);
+            if (mv != null) {
+                mv.visitUse(service);
+            }
         }
     }
 
     @Override
     public void visitProvide(String service, String... providers) {
         for (ModuleVisitor mv : moduleVisitors) {
-            mv.visitProvide(service, providers);
+            if (mv != null) {
+                mv.visitProvide(service, providers);
+            }
         }
     }
 
     @Override
     public void visitEnd() {
         for (ModuleVisitor mv : moduleVisitors) {
-            mv.visitEnd();
+            if (mv != null) {
+                mv.visitEnd();
+            }
         }
     }
 

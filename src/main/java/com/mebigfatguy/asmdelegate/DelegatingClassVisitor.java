@@ -38,14 +38,18 @@ public class DelegatingClassVisitor extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         for (ClassVisitor cv : classVisitors) {
-            cv.visit(version, access, name, signature, superName, interfaces);
+            if (cv != null) {
+                cv.visit(version, access, name, signature, superName, interfaces);
+            }
         }
     }
 
     @Override
     public void visitSource(String source, String debug) {
         for (ClassVisitor cv : classVisitors) {
-            cv.visitSource(source, debug);
+            if (cv != null) {
+                cv.visitSource(source, debug);
+            }
         }
     }
 
@@ -54,7 +58,9 @@ public class DelegatingClassVisitor extends ClassVisitor {
         ModuleVisitor[] moduleVisitors = new ModuleVisitor[classVisitors.length];
         int i = 0;
         for (ClassVisitor cv : classVisitors) {
-            moduleVisitors[i++] = cv.visitModule(name, access, version);
+            if (cv != null) {
+                moduleVisitors[i++] = cv.visitModule(name, access, version);
+            }
         }
 
         return new DelegatingModuleVisitor(api, moduleVisitors);
@@ -63,14 +69,20 @@ public class DelegatingClassVisitor extends ClassVisitor {
     @Override
     public void visitNestHost(String nestHost) {
         for (ClassVisitor cv : classVisitors) {
-            cv.visitNestHost(nestHost);
+            if (cv != null) {
+                if (cv != null) {
+                    cv.visitNestHost(nestHost);
+                }
+            }
         }
     }
 
     @Override
     public void visitOuterClass(String owner, String name, String descriptor) {
         for (ClassVisitor cv : classVisitors) {
-            cv.visitOuterClass(owner, name, descriptor);
+            if (cv != null) {
+                cv.visitOuterClass(owner, name, descriptor);
+            }
         }
     }
 
@@ -79,7 +91,9 @@ public class DelegatingClassVisitor extends ClassVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[classVisitors.length];
         int i = 0;
         for (ClassVisitor cv : classVisitors) {
-            annotationVisitors[i++] = cv.visitAnnotation(descriptor, visible);
+            if (cv != null) {
+                annotationVisitors[i++] = cv.visitAnnotation(descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -90,7 +104,9 @@ public class DelegatingClassVisitor extends ClassVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[classVisitors.length];
         int i = 0;
         for (ClassVisitor cv : classVisitors) {
-            annotationVisitors[i++] = cv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+            if (cv != null) {
+                annotationVisitors[i++] = cv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -99,21 +115,27 @@ public class DelegatingClassVisitor extends ClassVisitor {
     @Override
     public void visitAttribute(Attribute attribute) {
         for (ClassVisitor cv : classVisitors) {
-            cv.visitAttribute(attribute);
+            if (cv != null) {
+                cv.visitAttribute(attribute);
+            }
         }
     }
 
     @Override
     public void visitNestMember(String nestMember) {
         for (ClassVisitor cv : classVisitors) {
-            cv.visitNestMember(nestMember);
+            if (cv != null) {
+                cv.visitNestMember(nestMember);
+            }
         }
     }
 
     @Override
     public void visitInnerClass(String name, String outerName, String innerName, int access) {
         for (ClassVisitor cv : classVisitors) {
-            cv.visitInnerClass(name, outerName, innerName, access);
+            if (cv != null) {
+                cv.visitInnerClass(name, outerName, innerName, access);
+            }
         }
     }
 
@@ -122,7 +144,9 @@ public class DelegatingClassVisitor extends ClassVisitor {
         FieldVisitor[] fieldVisitors = new FieldVisitor[classVisitors.length];
         int i = 0;
         for (ClassVisitor cv : classVisitors) {
-            fieldVisitors[i++] = cv.visitField(access, name, descriptor, signature, value);
+            if (cv != null) {
+                fieldVisitors[i++] = cv.visitField(access, name, descriptor, signature, value);
+            }
         }
 
         return new DelegatingFieldVisitor(api, fieldVisitors);
@@ -134,7 +158,9 @@ public class DelegatingClassVisitor extends ClassVisitor {
         MethodVisitor[] methodVisitors = new MethodVisitor[classVisitors.length];
         int i = 0;
         for (ClassVisitor cv : classVisitors) {
-            methodVisitors[i++] = cv.visitMethod(access, name, descriptor, signature, exceptions);
+            if (cv != null) {
+                methodVisitors[i++] = cv.visitMethod(access, name, descriptor, signature, exceptions);
+            }
         }
 
         return new DelegatingMethodVisitor(api, methodVisitors);
@@ -143,7 +169,9 @@ public class DelegatingClassVisitor extends ClassVisitor {
     @Override
     public void visitEnd() {
         for (ClassVisitor cv : classVisitors) {
-            cv.visitEnd();
+            if (cv != null) {
+                cv.visitEnd();
+            }
         }
     }
 

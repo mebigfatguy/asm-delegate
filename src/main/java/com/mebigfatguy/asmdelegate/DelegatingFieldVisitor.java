@@ -37,7 +37,9 @@ public class DelegatingFieldVisitor extends FieldVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[fieldVisitors.length];
         int i = 0;
         for (FieldVisitor fv : fieldVisitors) {
-            annotationVisitors[i++] = fv.visitAnnotation(descriptor, visible);
+            if (fv != null) {
+                annotationVisitors[i++] = fv.visitAnnotation(descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -48,7 +50,9 @@ public class DelegatingFieldVisitor extends FieldVisitor {
         AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[fieldVisitors.length];
         int i = 0;
         for (FieldVisitor fv : fieldVisitors) {
-            annotationVisitors[i++] = fv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+            if (fv != null) {
+                annotationVisitors[i++] = fv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -58,14 +62,18 @@ public class DelegatingFieldVisitor extends FieldVisitor {
     @Override
     public void visitAttribute(Attribute attribute) {
         for (FieldVisitor fv : fieldVisitors) {
-            fv.visitAttribute(attribute);
+            if (fv != null) {
+                fv.visitAttribute(attribute);
+            }
         }
     }
 
     @Override
     public void visitEnd() {
         for (FieldVisitor fv : fieldVisitors) {
-            fv.visitEnd();
+            if (fv != null) {
+                fv.visitEnd();
+            }
         }
     }
 

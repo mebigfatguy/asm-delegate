@@ -32,14 +32,18 @@ public class DelegatingAnnotationVisitor extends AnnotationVisitor {
     @Override
     public void visit(String name, Object value) {
         for (AnnotationVisitor av : annotationVisitors) {
-            av.visit(name, value);
+            if (av != null) {
+                av.visit(name, value);
+            }
         }
     }
 
     @Override
     public void visitEnum(String name, String descriptor, String value) {
         for (AnnotationVisitor av : annotationVisitors) {
-            av.visitEnum(name, descriptor, value);
+            if (av != null) {
+                av.visitEnum(name, descriptor, value);
+            }
         }
     }
 
@@ -48,7 +52,9 @@ public class DelegatingAnnotationVisitor extends AnnotationVisitor {
         AnnotationVisitor[] subAnnotationVisitors = new AnnotationVisitor[annotationVisitors.length];
         int i = 0;
         for (AnnotationVisitor av : annotationVisitors) {
-            subAnnotationVisitors[i++] = av.visitAnnotation(name, descriptor);
+            if (av != null) {
+                subAnnotationVisitors[i++] = av.visitAnnotation(name, descriptor);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, subAnnotationVisitors);
@@ -59,7 +65,9 @@ public class DelegatingAnnotationVisitor extends AnnotationVisitor {
         AnnotationVisitor[] arrayAnnotationVisitors = new AnnotationVisitor[annotationVisitors.length];
         int i = 0;
         for (AnnotationVisitor av : annotationVisitors) {
-            arrayAnnotationVisitors[i++] = av.visitArray(name);
+            if (av != null) {
+                arrayAnnotationVisitors[i++] = av.visitArray(name);
+            }
         }
 
         return new DelegatingAnnotationVisitor(api, arrayAnnotationVisitors);
@@ -68,7 +76,9 @@ public class DelegatingAnnotationVisitor extends AnnotationVisitor {
     @Override
     public void visitEnd() {
         for (AnnotationVisitor av : annotationVisitors) {
-            av.visitEnd();
+            if (av != null) {
+                av.visitEnd();
+            }
         }
     }
 
