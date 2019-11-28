@@ -45,7 +45,7 @@ public class DelegatingClassVisitorTest {
 
         Assert.assertEquals(2, visitors.size());
         Assert.assertEquals(CV1.class, visitors.get(0));
-        Assert.assertEquals(CV2.class, visitors.get(0));
+        Assert.assertEquals(CV2.class, visitors.get(1));
     }
 
     public static class CV1 extends ClassVisitor {
