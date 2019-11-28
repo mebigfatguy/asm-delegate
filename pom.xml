@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
     <groupId>com.mebigfatguy.asm-delegate</groupId>
     <artifactId>asm-delegate</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.0</version>
 
 	<name>asm-delegate</name>
     <description>A set of asm visitors that allows multiple visitors to be used at the same time, simply</description>
