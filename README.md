@@ -12,10 +12,12 @@ DelegatingClassVisitor dcv = new DelegatingClassVisitor(Opcodes.ASM7, v1, v2, v3
 ClassReader r = new ClassReader(inputStream, 0);
 r.accept(dcv);
 ```
-Delegating visitors are available for all ASM visitors: Class, Field, Method, Annotation, Module
+Delegating visitors are available for all asm visitors: Class, Field, Method, Annotation, Module
 
 Available on maven central with coordinates
 
+|            |                              |
+|------------|------------------------------|
 | GroupId    | com.mebigfatguy.asm-delegate |
 | ArtifactId | asm-delegate                 |
 | Version    | 0.2.0                        |
