@@ -8,7 +8,7 @@
 
     <name>asm-delegate</name>
     <description>A set of asm visitors that allows multiple visitors to be used at the same time, simply</description>
-    <url>http://github.com/mebigfatguy/asm-delegate</url>
+    <url>https://github.com/mebigfatguy/asm-delegate</url>
     <inceptionYear>2019</inceptionYear>
 
     <developers>
@@ -22,7 +22,7 @@
     <licenses>
         <license>
             <name>Apache 2 License</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.html</url>
         </license>
     </licenses>
 
