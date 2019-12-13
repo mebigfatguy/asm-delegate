@@ -20,8 +20,6 @@ package com.mebigfatguy.asmdelegate;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,9 +31,9 @@ public class DelegatingClassVisitorTest {
 
     @Test
     public void testSimpleDelegation() throws IOException {
-
-        List<Class> visitors = new ArrayList<>(2);
-        DelegatingClassVisitor dcv = new DelegatingClassVisitor(Opcodes.ASM7, new CV1(visitors), new CV2(visitors));
+        CV1 visitor1 = new CV1();
+        CV2 visitor2 = new CV2();
+        DelegatingClassVisitor dcv = new DelegatingClassVisitor(Opcodes.ASM7, visitor1, visitor2);
 
         try (InputStream is = DelegatingClassVisitorTest.class
                 .getResourceAsStream("/" + DelegatingClassVisitorTest.class.getName().replace('.', '/') + ".class")) {
@@ -43,41 +41,36 @@ public class DelegatingClassVisitorTest {
             r.accept(dcv, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
         }
 
-        Assert.assertEquals(2, visitors.size());
-        Assert.assertEquals(CV1.class, visitors.get(0));
-        Assert.assertEquals(CV2.class, visitors.get(1));
+        Assert.assertTrue(visitor1.isVisited);
+        Assert.assertTrue(visitor2.isVisited);
     }
 
     public static class CV1 extends ClassVisitor {
+        boolean isVisited;
 
-        List<Class> visitors;
-
-        public CV1(List<Class> visitedVisitors) {
+        public CV1() {
             super(Opcodes.ASM7);
-            visitors = visitedVisitors;
         }
 
         @Override
         public void visit(int version, int access, String name, String signature, String superName,
                 String[] interfaces) {
-            visitors.add(CV1.class);
+            this.isVisited = true;
         }
 
     }
 
     public static class CV2 extends ClassVisitor {
+        boolean isVisited;
 
-        List<Class> visitors;
-
-        public CV2(List<Class> visitedVisitors) {
+        public CV2() {
             super(Opcodes.ASM7);
-            visitors = visitedVisitors;
         }
 
         @Override
         public void visit(int version, int access, String name, String signature, String superName,
                 String[] interfaces) {
-            visitors.add(CV2.class);
+            this.isVisited = true;
         }
 
     }
