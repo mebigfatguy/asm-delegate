@@ -45,10 +45,10 @@ public class DelegatingClassVisitorTest {
         Assert.assertTrue(visitor2.isVisited);
     }
 
-    public static class CV1 extends ClassVisitor {
+    static class CV1 extends ClassVisitor {
         boolean isVisited;
 
-        public CV1() {
+        CV1() {
             super(Opcodes.ASM7);
         }
 
@@ -60,10 +60,10 @@ public class DelegatingClassVisitorTest {
 
     }
 
-    public static class CV2 extends ClassVisitor {
+    static class CV2 extends ClassVisitor {
         boolean isVisited;
 
-        public CV2() {
+        CV2() {
             super(Opcodes.ASM7);
         }
 
