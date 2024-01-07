@@ -1,8 +1,8 @@
 /*
  * asm-delegate - a set of asm visitors that allows multiple visitors to be used at the same time, simply
  *
- * Copyright 2019-2019 MeBigFatGuy.com
- * Copyright 2019-2019 Dave Brosius
+ * Copyright 2019-2024 MeBigFatGuy.com
+ * Copyright 2019-2024 Dave Brosius
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,49 +29,49 @@ import org.objectweb.asm.Opcodes;
 
 public class DelegatingClassVisitorTest {
 
-    @Test
-    public void testSimpleDelegation() throws IOException {
-        CV1 visitor1 = new CV1();
-        CV2 visitor2 = new CV2();
-        DelegatingClassVisitor dcv = new DelegatingClassVisitor(Opcodes.ASM7, visitor1, visitor2);
+	@Test
+	public void testSimpleDelegation() throws IOException {
+		CV1 visitor1 = new CV1();
+		CV2 visitor2 = new CV2();
+		DelegatingClassVisitor dcv = new DelegatingClassVisitor(Opcodes.ASM7, visitor1, visitor2);
 
-        try (InputStream is = DelegatingClassVisitorTest.class
-                .getResourceAsStream("/" + DelegatingClassVisitorTest.class.getName().replace('.', '/') + ".class")) {
-            ClassReader r = new ClassReader(is);
-            r.accept(dcv, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-        }
+		try (InputStream is = DelegatingClassVisitorTest.class
+				.getResourceAsStream("/" + DelegatingClassVisitorTest.class.getName().replace('.', '/') + ".class")) {
+			ClassReader r = new ClassReader(is);
+			r.accept(dcv, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+		}
 
-        Assert.assertTrue(visitor1.isVisited);
-        Assert.assertTrue(visitor2.isVisited);
-    }
+		Assert.assertTrue(visitor1.isVisited);
+		Assert.assertTrue(visitor2.isVisited);
+	}
 
-    static class CV1 extends ClassVisitor {
-        boolean isVisited;
+	static class CV1 extends ClassVisitor {
+		boolean isVisited;
 
-        CV1() {
-            super(Opcodes.ASM7);
-        }
+		CV1() {
+			super(Opcodes.ASM7);
+		}
 
-        @Override
-        public void visit(int version, int access, String name, String signature, String superName,
-                String[] interfaces) {
-            this.isVisited = true;
-        }
+		@Override
+		public void visit(int version, int access, String name, String signature, String superName,
+				String[] interfaces) {
+			this.isVisited = true;
+		}
 
-    }
+	}
 
-    static class CV2 extends ClassVisitor {
-        boolean isVisited;
+	static class CV2 extends ClassVisitor {
+		boolean isVisited;
 
-        CV2() {
-            super(Opcodes.ASM7);
-        }
+		CV2() {
+			super(Opcodes.ASM7);
+		}
 
-        @Override
-        public void visit(int version, int access, String name, String signature, String superName,
-                String[] interfaces) {
-            this.isVisited = true;
-        }
+		@Override
+		public void visit(int version, int access, String name, String signature, String superName,
+				String[] interfaces) {
+			this.isVisited = true;
+		}
 
-    }
+	}
 }

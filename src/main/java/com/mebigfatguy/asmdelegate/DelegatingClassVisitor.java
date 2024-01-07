@@ -1,8 +1,8 @@
 /*
  * asm-delegate - a set of asm visitors that allows multiple visitors to be used at the same time, simply
  *
- * Copyright 2019-2019 MeBigFatGuy.com
- * Copyright 2019-2019 Dave Brosius
+ * Copyright 2019-2024 MeBigFatGuy.com
+ * Copyright 2019-2024 Dave Brosius
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,191 +29,190 @@ import org.objectweb.asm.TypePath;
 
 public class DelegatingClassVisitor extends ClassVisitor {
 
-    private ClassVisitor[] classVisitors;
+	private ClassVisitor[] classVisitors;
 
-    public DelegatingClassVisitor(int api, ClassVisitor... visitors) {
-        super(api);
-        this.classVisitors = visitors;
-    }
+	public DelegatingClassVisitor(int api, ClassVisitor... visitors) {
+		super(api);
+		this.classVisitors = visitors;
+	}
 
-    @Override
-    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                cv.visit(version, access, name, signature, superName, interfaces);
-            }
-        }
-    }
+	@Override
+	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				cv.visit(version, access, name, signature, superName, interfaces);
+			}
+		}
+	}
 
-    @Override
-    public void visitSource(String source, String debug) {
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                cv.visitSource(source, debug);
-            }
-        }
-    }
+	@Override
+	public void visitSource(String source, String debug) {
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				cv.visitSource(source, debug);
+			}
+		}
+	}
 
-    @Override
-    public ModuleVisitor visitModule(String name, int access, String version) {
-        ModuleVisitor[] moduleVisitors = new ModuleVisitor[classVisitors.length];
-        int i = 0;
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                moduleVisitors[i++] = cv.visitModule(name, access, version);
-            }
-        }
+	@Override
+	public ModuleVisitor visitModule(String name, int access, String version) {
+		ModuleVisitor[] moduleVisitors = new ModuleVisitor[classVisitors.length];
+		int i = 0;
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				moduleVisitors[i++] = cv.visitModule(name, access, version);
+			}
+		}
 
-        if (i == 0) {
-            return null;
-        }
-        return new DelegatingModuleVisitor(api, moduleVisitors);
-    }
+		if (i == 0) {
+			return null;
+		}
+		return new DelegatingModuleVisitor(api, moduleVisitors);
+	}
 
-    @Override
-    public void visitNestHost(String nestHost) {
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                if (cv != null) {
-                    cv.visitNestHost(nestHost);
-                }
-            }
-        }
-    }
+	@Override
+	public void visitNestHost(String nestHost) {
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				if (cv != null) {
+					cv.visitNestHost(nestHost);
+				}
+			}
+		}
+	}
 
-    @Override
-    public void visitOuterClass(String owner, String name, String descriptor) {
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                cv.visitOuterClass(owner, name, descriptor);
-            }
-        }
-    }
+	@Override
+	public void visitOuterClass(String owner, String name, String descriptor) {
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				cv.visitOuterClass(owner, name, descriptor);
+			}
+		}
+	}
 
-    @Override
-    public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[classVisitors.length];
-        int i = 0;
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                annotationVisitors[i++] = cv.visitAnnotation(descriptor, visible);
-            }
-        }
+	@Override
+	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[classVisitors.length];
+		int i = 0;
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				annotationVisitors[i++] = cv.visitAnnotation(descriptor, visible);
+			}
+		}
 
-        if (i == 0) {
-            return null;
-        }
-        return new DelegatingAnnotationVisitor(api, annotationVisitors);
-    }
+		if (i == 0) {
+			return null;
+		}
+		return new DelegatingAnnotationVisitor(api, annotationVisitors);
+	}
 
-    @Override
-    public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
-        AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[classVisitors.length];
-        int i = 0;
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                annotationVisitors[i++] = cv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
-            }
-        }
+	@Override
+	public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
+		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[classVisitors.length];
+		int i = 0;
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				annotationVisitors[i++] = cv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+			}
+		}
 
-        if (i == 0) {
-            return null;
-        }
-        return new DelegatingAnnotationVisitor(api, annotationVisitors);
-    }
+		if (i == 0) {
+			return null;
+		}
+		return new DelegatingAnnotationVisitor(api, annotationVisitors);
+	}
 
-    @Override
-    public void visitAttribute(Attribute attribute) {
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                cv.visitAttribute(attribute);
-            }
-        }
-    }
+	@Override
+	public void visitAttribute(Attribute attribute) {
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				cv.visitAttribute(attribute);
+			}
+		}
+	}
 
-    @Override
-    public void visitNestMember(String nestMember) {
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                cv.visitNestMember(nestMember);
-            }
-        }
-    }
+	@Override
+	public void visitNestMember(String nestMember) {
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				cv.visitNestMember(nestMember);
+			}
+		}
+	}
 
-    @Override
-    public void visitInnerClass(String name, String outerName, String innerName, int access) {
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                cv.visitInnerClass(name, outerName, innerName, access);
-            }
-        }
-    }
+	@Override
+	public void visitInnerClass(String name, String outerName, String innerName, int access) {
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				cv.visitInnerClass(name, outerName, innerName, access);
+			}
+		}
+	}
 
-    @Override
-    public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-        FieldVisitor[] fieldVisitors = new FieldVisitor[classVisitors.length];
-        int i = 0;
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                fieldVisitors[i++] = cv.visitField(access, name, descriptor, signature, value);
-            }
-        }
+	@Override
+	public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
+		FieldVisitor[] fieldVisitors = new FieldVisitor[classVisitors.length];
+		int i = 0;
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				fieldVisitors[i++] = cv.visitField(access, name, descriptor, signature, value);
+			}
+		}
 
-        if (i == 0) {
-            return null;
-        }
-        return new DelegatingFieldVisitor(api, fieldVisitors);
-    }
+		if (i == 0) {
+			return null;
+		}
+		return new DelegatingFieldVisitor(api, fieldVisitors);
+	}
 
-    @Override
-    public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
-            String[] exceptions) {
-        MethodVisitor[] methodVisitors = new MethodVisitor[classVisitors.length];
-        int i = 0;
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                methodVisitors[i++] = cv.visitMethod(access, name, descriptor, signature, exceptions);
-            }
-        }
+	@Override
+	public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
+			String[] exceptions) {
+		MethodVisitor[] methodVisitors = new MethodVisitor[classVisitors.length];
+		int i = 0;
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				methodVisitors[i++] = cv.visitMethod(access, name, descriptor, signature, exceptions);
+			}
+		}
 
-        if (i == 0) {
-            return null;
-        }
-        return new DelegatingMethodVisitor(api, methodVisitors);
-    }
-    
+		if (i == 0) {
+			return null;
+		}
+		return new DelegatingMethodVisitor(api, methodVisitors);
+	}
+
 	@Override
 	public void visitPermittedSubclass(String permittedSubclass) {
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-            	cv.visitPermittedSubclass(permittedSubclass);
-            }
-        }
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				cv.visitPermittedSubclass(permittedSubclass);
+			}
+		}
 	}
 
 	@Override
 	public RecordComponentVisitor visitRecordComponent(String name, String descriptor, String signature) {
 		RecordComponentVisitor[] recordComponentVisitors = new RecordComponentVisitor[classVisitors.length];
-        int i = 0;
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-            	recordComponentVisitors[i++] = cv.visitRecordComponent(name, descriptor, signature);
-            }
-        }
+		int i = 0;
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				recordComponentVisitors[i++] = cv.visitRecordComponent(name, descriptor, signature);
+			}
+		}
 
-        if (i == 0) {
-            return null;
-        }
-        return new DelegatingRecordComponentVisitor(api, recordComponentVisitors);
+		if (i == 0) {
+			return null;
+		}
+		return new DelegatingRecordComponentVisitor(api, recordComponentVisitors);
 	}
 
-
-    @Override
-    public void visitEnd() {
-        for (ClassVisitor cv : classVisitors) {
-            if (cv != null) {
-                cv.visitEnd();
-            }
-        }
-    }
+	@Override
+	public void visitEnd() {
+		for (ClassVisitor cv : classVisitors) {
+			if (cv != null) {
+				cv.visitEnd();
+			}
+		}
+	}
 }

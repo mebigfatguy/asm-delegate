@@ -1,8 +1,8 @@
 /*
  * asm-delegate - a set of asm visitors that allows multiple visitors to be used at the same time, simply
  *
- * Copyright 2019-2019 MeBigFatGuy.com
- * Copyright 2019-2019 Dave Brosius
+ * Copyright 2019-2024 MeBigFatGuy.com
+ * Copyright 2019-2024 Dave Brosius
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,62 +25,62 @@ import org.objectweb.asm.TypePath;
 
 public class DelegatingFieldVisitor extends FieldVisitor {
 
-    private FieldVisitor[] fieldVisitors;
+	private FieldVisitor[] fieldVisitors;
 
-    public DelegatingFieldVisitor(int api, FieldVisitor... visitors) {
-        super(api);
-        fieldVisitors = visitors;
-    }
+	public DelegatingFieldVisitor(int api, FieldVisitor... visitors) {
+		super(api);
+		fieldVisitors = visitors;
+	}
 
-    @Override
-    public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[fieldVisitors.length];
-        int i = 0;
-        for (FieldVisitor fv : fieldVisitors) {
-            if (fv != null) {
-                annotationVisitors[i++] = fv.visitAnnotation(descriptor, visible);
-            }
-        }
+	@Override
+	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[fieldVisitors.length];
+		int i = 0;
+		for (FieldVisitor fv : fieldVisitors) {
+			if (fv != null) {
+				annotationVisitors[i++] = fv.visitAnnotation(descriptor, visible);
+			}
+		}
 
-        if (i == 0) {
-            return null;
-        }
-        return new DelegatingAnnotationVisitor(api, annotationVisitors);
-    }
+		if (i == 0) {
+			return null;
+		}
+		return new DelegatingAnnotationVisitor(api, annotationVisitors);
+	}
 
-    @Override
-    public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
-        AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[fieldVisitors.length];
-        int i = 0;
-        for (FieldVisitor fv : fieldVisitors) {
-            if (fv != null) {
-                annotationVisitors[i++] = fv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
-            }
-        }
+	@Override
+	public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
+		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[fieldVisitors.length];
+		int i = 0;
+		for (FieldVisitor fv : fieldVisitors) {
+			if (fv != null) {
+				annotationVisitors[i++] = fv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+			}
+		}
 
-        if (i == 0) {
-            return null;
-        }
-        return new DelegatingAnnotationVisitor(api, annotationVisitors);
+		if (i == 0) {
+			return null;
+		}
+		return new DelegatingAnnotationVisitor(api, annotationVisitors);
 
-    }
+	}
 
-    @Override
-    public void visitAttribute(Attribute attribute) {
-        for (FieldVisitor fv : fieldVisitors) {
-            if (fv != null) {
-                fv.visitAttribute(attribute);
-            }
-        }
-    }
+	@Override
+	public void visitAttribute(Attribute attribute) {
+		for (FieldVisitor fv : fieldVisitors) {
+			if (fv != null) {
+				fv.visitAttribute(attribute);
+			}
+		}
+	}
 
-    @Override
-    public void visitEnd() {
-        for (FieldVisitor fv : fieldVisitors) {
-            if (fv != null) {
-                fv.visitEnd();
-            }
-        }
-    }
+	@Override
+	public void visitEnd() {
+		for (FieldVisitor fv : fieldVisitors) {
+			if (fv != null) {
+				fv.visitEnd();
+			}
+		}
+	}
 
 }
