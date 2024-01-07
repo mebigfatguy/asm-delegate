@@ -24,6 +24,7 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.ModuleVisitor;
+import org.objectweb.asm.RecordComponentVisitor;
 import org.objectweb.asm.TypePath;
 
 public class DelegatingClassVisitor extends ClassVisitor {
@@ -180,6 +181,32 @@ public class DelegatingClassVisitor extends ClassVisitor {
         }
         return new DelegatingMethodVisitor(api, methodVisitors);
     }
+    
+	@Override
+	public void visitPermittedSubclass(String permittedSubclass) {
+        for (ClassVisitor cv : classVisitors) {
+            if (cv != null) {
+            	cv.visitPermittedSubclass(permittedSubclass);
+            }
+        }
+	}
+
+	@Override
+	public RecordComponentVisitor visitRecordComponent(String name, String descriptor, String signature) {
+		RecordComponentVisitor[] recordComponentVisitors = new RecordComponentVisitor[classVisitors.length];
+        int i = 0;
+        for (ClassVisitor cv : classVisitors) {
+            if (cv != null) {
+            	recordComponentVisitors[i++] = cv.visitRecordComponent(name, descriptor, signature);
+            }
+        }
+
+        if (i == 0) {
+            return null;
+        }
+        return new DelegatingRecordComponentVisitor(api, recordComponentVisitors);
+	}
+
 
     @Override
     public void visitEnd() {
@@ -189,5 +216,4 @@ public class DelegatingClassVisitor extends ClassVisitor {
             }
         }
     }
-
 }
