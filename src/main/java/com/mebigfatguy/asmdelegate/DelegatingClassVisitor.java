@@ -32,9 +32,9 @@ import org.objectweb.asm.TypePath;
 
 public class DelegatingClassVisitor extends ClassVisitor {
 
-	private ClassVisitor[] classVisitors;
+	private List<ClassVisitor> classVisitors;
 
-	public DelegatingClassVisitor(int api, ClassVisitor... visitors) {
+	public DelegatingClassVisitor(int api, List<ClassVisitor> visitors) {
 		super(api);
 		this.classVisitors = visitors;
 	}
@@ -59,7 +59,7 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public ModuleVisitor visitModule(String name, int access, String version) {
-		List<ModuleVisitor> moduleVisitors = new ArrayList<>(classVisitors.length);
+		List<ModuleVisitor> moduleVisitors = new ArrayList<>(classVisitors.size());
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
 				ModuleVisitor mv = cv.visitModule(name, access, version);
@@ -97,7 +97,7 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-		List<AnnotationVisitor> annotationVisitors = new ArrayList<>(classVisitors.length);
+		List<AnnotationVisitor> annotationVisitors = new ArrayList<>(classVisitors.size());
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
 				AnnotationVisitor av = cv.visitAnnotation(descriptor, visible);
@@ -115,7 +115,7 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
-		List<AnnotationVisitor> annotationVisitors = new ArrayList<>(classVisitors.length);
+		List<AnnotationVisitor> annotationVisitors = new ArrayList<>(classVisitors.size());
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
 				AnnotationVisitor av = cv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
@@ -160,7 +160,7 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-		List<FieldVisitor> fieldVisitors = new ArrayList(classVisitors.length);
+		List<FieldVisitor> fieldVisitors = new ArrayList(classVisitors.size());
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
 				FieldVisitor fv = cv.visitField(access, name, descriptor, signature, value);
@@ -179,7 +179,7 @@ public class DelegatingClassVisitor extends ClassVisitor {
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
 			String[] exceptions) {
-		List<MethodVisitor> methodVisitors = new ArrayList<>(classVisitors.length);
+		List<MethodVisitor> methodVisitors = new ArrayList<>(classVisitors.size());
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
 				MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
@@ -206,7 +206,7 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public RecordComponentVisitor visitRecordComponent(String name, String descriptor, String signature) {
-		List<RecordComponentVisitor> recordComponentVisitors = new ArrayList<>(classVisitors.length);
+		List<RecordComponentVisitor> recordComponentVisitors = new ArrayList<>(classVisitors.size());
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
 				RecordComponentVisitor rcv = cv.visitRecordComponent(name, descriptor, signature);

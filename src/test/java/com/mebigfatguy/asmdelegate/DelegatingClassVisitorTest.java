@@ -20,6 +20,7 @@ package com.mebigfatguy.asmdelegate;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class DelegatingClassVisitorTest {
 	public void testSimpleDelegation() throws IOException {
 		CV1 visitor1 = new CV1();
 		CV2 visitor2 = new CV2();
-		DelegatingClassVisitor dcv = new DelegatingClassVisitor(Opcodes.ASM7, visitor1, visitor2);
+		DelegatingClassVisitor dcv = new DelegatingClassVisitor(Opcodes.ASM7, Arrays.asList(visitor1, visitor2));
 
 		try (InputStream is = DelegatingClassVisitorTest.class
 				.getResourceAsStream("/" + DelegatingClassVisitorTest.class.getName().replace('.', '/') + ".class")) {
