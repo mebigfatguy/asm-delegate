@@ -18,6 +18,8 @@
  */
 package com.mebigfatguy.asmdelegate;
 
+import java.util.List;
+
 import org.objectweb.asm.ModuleVisitor;
 
 /*
@@ -40,9 +42,9 @@ import org.objectweb.asm.ModuleVisitor;
  */
 public class DelegatingModuleVisitor extends ModuleVisitor {
 
-	private ModuleVisitor[] moduleVisitors;
+	private List<ModuleVisitor> moduleVisitors;
 
-	public DelegatingModuleVisitor(int api, ModuleVisitor... visitors) {
+	public DelegatingModuleVisitor(int api, List<ModuleVisitor> visitors) {
 		super(api);
 		moduleVisitors = visitors;
 	}

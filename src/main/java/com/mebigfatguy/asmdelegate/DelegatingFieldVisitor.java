@@ -18,6 +18,9 @@
  */
 package com.mebigfatguy.asmdelegate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.FieldVisitor;
@@ -25,24 +28,26 @@ import org.objectweb.asm.TypePath;
 
 public class DelegatingFieldVisitor extends FieldVisitor {
 
-	private FieldVisitor[] fieldVisitors;
+	private List<FieldVisitor> fieldVisitors;
 
-	public DelegatingFieldVisitor(int api, FieldVisitor... visitors) {
+	public DelegatingFieldVisitor(int api, List<FieldVisitor> visitors) {
 		super(api);
 		fieldVisitors = visitors;
 	}
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[fieldVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList<>(fieldVisitors.size());
 		for (FieldVisitor fv : fieldVisitors) {
 			if (fv != null) {
-				annotationVisitors[i++] = fv.visitAnnotation(descriptor, visible);
+				AnnotationVisitor av = fv.visitAnnotation(descriptor, visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -50,15 +55,17 @@ public class DelegatingFieldVisitor extends FieldVisitor {
 
 	@Override
 	public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[fieldVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList<>(fieldVisitors.size());
 		for (FieldVisitor fv : fieldVisitors) {
 			if (fv != null) {
-				annotationVisitors[i++] = fv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+				AnnotationVisitor av = fv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);

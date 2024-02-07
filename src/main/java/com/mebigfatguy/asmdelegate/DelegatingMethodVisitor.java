@@ -18,6 +18,9 @@
  */
 package com.mebigfatguy.asmdelegate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.Handle;
@@ -27,9 +30,9 @@ import org.objectweb.asm.TypePath;
 
 public class DelegatingMethodVisitor extends MethodVisitor {
 
-	private MethodVisitor[] methodVisitors;
+	private List<MethodVisitor> methodVisitors;
 
-	public DelegatingMethodVisitor(int api, MethodVisitor... visitors) {
+	public DelegatingMethodVisitor(int api, List<MethodVisitor> visitors) {
 		super(api);
 		methodVisitors = visitors;
 	}
@@ -45,15 +48,15 @@ public class DelegatingMethodVisitor extends MethodVisitor {
 
 	@Override
 	public AnnotationVisitor visitAnnotationDefault() {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList(methodVisitors.size());
 		for (MethodVisitor mv : methodVisitors) {
 			if (mv != null) {
-				annotationVisitors[i++] = mv.visitAnnotationDefault();
+				AnnotationVisitor av = mv.visitAnnotationDefault();
+				annotationVisitors.add(av);
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -61,15 +64,17 @@ public class DelegatingMethodVisitor extends MethodVisitor {
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList(methodVisitors.size());
 		for (MethodVisitor mv : methodVisitors) {
 			if (mv != null) {
-				annotationVisitors[i++] = mv.visitAnnotation(descriptor, visible);
+				AnnotationVisitor av = mv.visitAnnotation(descriptor, visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -77,15 +82,17 @@ public class DelegatingMethodVisitor extends MethodVisitor {
 
 	@Override
 	public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList(methodVisitors.size());
 		for (MethodVisitor mv : methodVisitors) {
 			if (mv != null) {
-				annotationVisitors[i++] = mv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+				AnnotationVisitor av = mv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -102,15 +109,17 @@ public class DelegatingMethodVisitor extends MethodVisitor {
 
 	@Override
 	public AnnotationVisitor visitParameterAnnotation(int parameter, String descriptor, boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList(methodVisitors.size());
 		for (MethodVisitor mv : methodVisitors) {
 			if (mv != null) {
-				annotationVisitors[i++] = mv.visitParameterAnnotation(parameter, descriptor, visible);
+				AnnotationVisitor av = mv.visitParameterAnnotation(parameter, descriptor, visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -282,15 +291,18 @@ public class DelegatingMethodVisitor extends MethodVisitor {
 
 	@Override
 	public AnnotationVisitor visitInsnAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
+		List<AnnotationVisitor> annotationVisitors = new ArrayList(methodVisitors.size());
 		int i = 0;
 		for (MethodVisitor mv : methodVisitors) {
 			if (mv != null) {
-				annotationVisitors[i] = mv.visitInsnAnnotation(typeRef, typePath, descriptor, visible);
+				AnnotationVisitor av = mv.visitInsnAnnotation(typeRef, typePath, descriptor, visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -308,15 +320,17 @@ public class DelegatingMethodVisitor extends MethodVisitor {
 	@Override
 	public AnnotationVisitor visitTryCatchAnnotation(int typeRef, TypePath typePath, String descriptor,
 			boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList(methodVisitors.size());
 		for (MethodVisitor mv : methodVisitors) {
 			if (mv != null) {
-				annotationVisitors[i] = mv.visitTryCatchAnnotation(typeRef, typePath, descriptor, visible);
+				AnnotationVisitor av = mv.visitTryCatchAnnotation(typeRef, typePath, descriptor, visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -335,16 +349,19 @@ public class DelegatingMethodVisitor extends MethodVisitor {
 	@Override
 	public AnnotationVisitor visitLocalVariableAnnotation(int typeRef, TypePath typePath, Label[] start, Label[] end,
 			int[] index, String descriptor, boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[methodVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList(methodVisitors.size());
 		for (MethodVisitor mv : methodVisitors) {
 			if (mv != null) {
-				annotationVisitors[i] = mv.visitLocalVariableAnnotation(typeRef, typePath, start, end, index,
-						descriptor, visible);
+				AnnotationVisitor av = mv.visitLocalVariableAnnotation(typeRef, typePath, start, end, index, descriptor,
+						visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
+
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);

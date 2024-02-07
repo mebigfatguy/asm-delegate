@@ -18,6 +18,9 @@
  */
 package com.mebigfatguy.asmdelegate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;
@@ -56,15 +59,17 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public ModuleVisitor visitModule(String name, int access, String version) {
-		ModuleVisitor[] moduleVisitors = new ModuleVisitor[classVisitors.length];
-		int i = 0;
+		List<ModuleVisitor> moduleVisitors = new ArrayList<>(classVisitors.length);
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
-				moduleVisitors[i++] = cv.visitModule(name, access, version);
+				ModuleVisitor mv = cv.visitModule(name, access, version);
+				if (mv != null) {
+					moduleVisitors.add(mv);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (moduleVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingModuleVisitor(api, moduleVisitors);
@@ -92,15 +97,17 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[classVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList<>(classVisitors.length);
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
-				annotationVisitors[i++] = cv.visitAnnotation(descriptor, visible);
+				AnnotationVisitor av = cv.visitAnnotation(descriptor, visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -108,15 +115,17 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
-		AnnotationVisitor[] annotationVisitors = new AnnotationVisitor[classVisitors.length];
-		int i = 0;
+		List<AnnotationVisitor> annotationVisitors = new ArrayList<>(classVisitors.length);
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
-				annotationVisitors[i++] = cv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+				AnnotationVisitor av = cv.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
+				if (av != null) {
+					annotationVisitors.add(av);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (annotationVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingAnnotationVisitor(api, annotationVisitors);
@@ -151,15 +160,17 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-		FieldVisitor[] fieldVisitors = new FieldVisitor[classVisitors.length];
-		int i = 0;
+		List<FieldVisitor> fieldVisitors = new ArrayList(classVisitors.length);
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
-				fieldVisitors[i++] = cv.visitField(access, name, descriptor, signature, value);
+				FieldVisitor fv = cv.visitField(access, name, descriptor, signature, value);
+				if (fv != null) {
+					fieldVisitors.add(fv);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (fieldVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingFieldVisitor(api, fieldVisitors);
@@ -168,15 +179,17 @@ public class DelegatingClassVisitor extends ClassVisitor {
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
 			String[] exceptions) {
-		MethodVisitor[] methodVisitors = new MethodVisitor[classVisitors.length];
-		int i = 0;
+		List<MethodVisitor> methodVisitors = new ArrayList<>(classVisitors.length);
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
-				methodVisitors[i++] = cv.visitMethod(access, name, descriptor, signature, exceptions);
+				MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
+				if (mv != null) {
+					methodVisitors.add(mv);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (methodVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingMethodVisitor(api, methodVisitors);
@@ -193,15 +206,17 @@ public class DelegatingClassVisitor extends ClassVisitor {
 
 	@Override
 	public RecordComponentVisitor visitRecordComponent(String name, String descriptor, String signature) {
-		RecordComponentVisitor[] recordComponentVisitors = new RecordComponentVisitor[classVisitors.length];
-		int i = 0;
+		List<RecordComponentVisitor> recordComponentVisitors = new ArrayList<>(classVisitors.length);
 		for (ClassVisitor cv : classVisitors) {
 			if (cv != null) {
-				recordComponentVisitors[i++] = cv.visitRecordComponent(name, descriptor, signature);
+				RecordComponentVisitor rcv = cv.visitRecordComponent(name, descriptor, signature);
+				if (rcv != null) {
+					recordComponentVisitors.add(rcv);
+				}
 			}
 		}
 
-		if (i == 0) {
+		if (recordComponentVisitors.isEmpty()) {
 			return null;
 		}
 		return new DelegatingRecordComponentVisitor(api, recordComponentVisitors);
